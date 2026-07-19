@@ -1,92 +1,95 @@
 # Markov Hedge Fund Method
 
-Skill from **video 1 of the Quant Series**: *How To Use The Hedge Fund Method To Win Every Single Trade*.
+Навык из **первого видео Quant Series**: *How To Use The Hedge Fund Method To Win Every Single Trade*.
 
-Framework by **Roan** ([@RohOnChain](https://x.com/RohOnChain)) — I'm the guy installing it on camera.
+Фреймворк от **Roan** ([@RohOnChain](https://x.com/RohOnChain)) — я тот, кто устанавливает его на камеру.
 
 ---
 
-## Install (the headline path — two commands)
+## Установка (главный путь — две команды)
 
-In Claude Code:
+В Claude Code:
 
 ```
 /plugin marketplace add jackson-video-resources/markov-hedge-fund-method
 /plugin install markov-hedge-fund-method@markov-hedge-fund-method
 ```
 
-That's it. The skill is now installed. Invoke it any time, on any asset:
+Готово. Навык установлен. Вызывайте его в любой момент и для любого актива:
 
 ```
 /markov-hedge-fund-method:regime
 ```
 
-…or just ask in plain English: *"detect the regime on BTC-USD"*,
+…или просто спросите на обычном английском: *"detect the regime on BTC-USD"*,
 *"add a regime confirmation filter to my SPY momentum strategy"*,
 *"what's the long-run regime mix of AAPL — is it too tail-heavy to trade?"*
-Claude fires the `regime` skill automatically.
+Claude автоматически запустит навык `regime`.
 
-No API keys. No accounts. No `sudo`. Dependencies are resolved on first run by
-`uv` (PEP 723 inline metadata) — nothing to pip-install yourself.
-
----
-
-## What the skill does
-
-It answers one question for **any asset**: what regime are we in, how sticky is
-it, and what does that imply for risk and direction?
-
-- Labels every day Bull / Bear / Sideways via a rolling-return rule (default 20-day, ±5%)
-- Builds a 3×3 transition matrix from the asset's history (maximum-likelihood)
-- Forecasts n-steps ahead by raising the matrix to powers (Chapman-Kolmogorov)
-- Computes the long-run stationary distribution (baseline regime mix)
-- Emits a signed signal: `bull_prob − bear_prob` → direction + conviction
-- Runs a walk-forward backtest (no lookahead) → reports Sharpe + max drawdown
-- Optionally fits a Hidden Markov Model via `hmmlearn` (graceful degrade if it can't compile)
-
-It takes **either a ticker** (`--ticker BTC-USD`, fetched via `yfinance`) **or
-your own CSV** (`--csv my_prices.csv`, just a date + close column) — so it drops
-into whatever data pipeline you already run, on whatever asset you trade.
-
-It's built to **compose**: slot it into a trading agent you already have as a
-confirmation layer, a standalone signal, or a tail-risk filter — without
-rewriting your strategy. See [`skills/regime/SKILL.md`](./skills/regime/SKILL.md)
-for the JSON contract and three worked composition patterns.
+Никаких API-ключей. Никаких аккаунтов. Никакого `sudo`. Зависимости разрешаются
+при первом запуске через `uv` (встроенные метаданные PEP 723) — вам не нужно
+самостоятельно ничего устанавливать через pip.
 
 ---
 
-## The on-camera build / zero-trust manual path
+## Что делает навык
 
-[`markov-hedge-fund-method.md`](./markov-hedge-fund-method.md) is the original
-one-shot onboarding prompt — the version built **live on camera**. Paste it
-into Claude Code (agent mode) and it builds the whole skill from scratch in
-front of you: detects your OS, installs `uv`, writes every file, runs the
+Он отвечает на один вопрос для **любого актива**: в каком режиме мы находимся,
+насколько этот режим устойчив и что это означает для риска и направления?
+
+- Размечает каждый день как Bull / Bear / Sideways по правилу скользящей доходности (по умолчанию 20 дней, ±5%)
+- Строит переходную матрицу 3×3 по истории актива (метод максимального правдоподобия)
+- Прогнозирует на n шагов вперед, возводя матрицу в степени (уравнение Чепмена-Колмогорова)
+- Вычисляет долгосрочное стационарное распределение (базовую смесь режимов)
+- Выдает сигнал со знаком: `bull_prob − bear_prob` → направление + уверенность
+- Запускает walk-forward-бэктест (без подглядывания в будущее) → сообщает Sharpe + максимальную просадку
+- Опционально подгоняет скрытую марковскую модель через `hmmlearn` (мягко деградирует, если она не компилируется)
+
+Он принимает **либо тикер** (`--ticker BTC-USD`, загрузка через `yfinance`),
+**либо ваш собственный CSV** (`--csv my_prices.csv`, достаточно столбцов date +
+close) — поэтому его можно встроить в любой уже используемый конвейер данных и
+применять к любому торгуемому активу.
+
+Он создан для **композиции**: вставьте его в уже существующего торгового агента
+как слой подтверждения, самостоятельный сигнал или фильтр хвостового риска — без
+переписывания стратегии. JSON-контракт и три разобранных паттерна композиции
+см. в [`skills/regime/SKILL.md`](./skills/regime/SKILL.md).
+
+---
+
+## Сборка на камеру / ручной путь zero-trust
+
+[`markov-hedge-fund-method.md`](./markov-hedge-fund-method.md) — это исходный
+однократный onboarding-промпт, версия, собранная **вживую на камеру**.
+Вставьте его в Claude Code (agent mode), и он соберет весь навык с нуля прямо
+перед вами: определит вашу ОС, установит `uv`, запишет все файлы и запустит
 sanity check.
 
-It's kept here as the **zero-trust path**: if you don't want to install a
-plugin from a marketplace, this builds the identical logic locally so you can
-read every line as it's written. Most people should use the two-command plugin
-install above — this is the transparent fallback and the on-camera artifact.
+Он оставлен здесь как **zero-trust-путь**: если вы не хотите устанавливать
+плагин из marketplace, этот вариант локально собирает идентичную логику, чтобы
+вы могли читать каждую строку по мере ее записи. Большинству подойдет установка
+плагина двумя командами выше — это прозрачный запасной вариант и артефакт со
+съемки.
 
 ---
 
-## Pine Script bonus
+## Бонус: Pine Script
 
 [`pine-script/markov-hedge-fund-method.pine`](./pine-script/markov-hedge-fund-method.pine)
-— TradingView v5 indicator that paints the framework live on a chart: regime
-ribbon, live 3×3 transition matrix in the corner, stationary-distribution
-table, current-regime banner. Inputs: lookback window (default 20), Bull/Bear
-thresholds (default ±5%), table toggles.
+— индикатор TradingView v5, который отрисовывает фреймворк на графике вживую:
+ленту режима, живую переходную матрицу 3×3 в углу, таблицу стационарного
+распределения и баннер текущего режима. Входные параметры: окно lookback (по
+умолчанию 20), пороги Bull/Bear (по умолчанию ±5%), переключатели таблицы.
 
-Open TradingView → Pine Editor → paste the `.pine` → Save → Add to Chart.
+Откройте TradingView → Pine Editor → вставьте `.pine` → Save → Add to Chart.
 
 ---
 
-## Credit
+## Благодарности
 
-- **Framework:** Roan ([@RohOnChain](https://x.com/RohOnChain)) — read his original article for the underlying maths.
-- **Plugin + installer + animations:** [Lewis Jackson](https://www.youtube.com/@lewisjackson).
+- **Фреймворк:** Roan ([@RohOnChain](https://x.com/RohOnChain)) — прочитайте его исходную статью с математической основой.
+- **Плагин + установщик + анимации:** [Lewis Jackson](https://www.youtube.com/@lewisjackson).
 
-## License
+## Лицензия
 
-MIT — see the umbrella [LICENSE](../LICENSE).
+MIT — см. общий файл [LICENSE](../LICENSE).
