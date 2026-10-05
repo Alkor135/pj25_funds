@@ -10,7 +10,7 @@ import unittest
 
 import pandas as pd
 
-from pj25_funds.backtest import run_open_close_backtest
+from old.scripts.pj25_funds.backtest import run_open_close_backtest
 
 
 def sample_signal_df() -> pd.DataFrame:

@@ -24,11 +24,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from pj25_funds.backtest import run_open_close_backtest
-from pj25_funds.data import load_futures_quotes
-from pj25_funds.markov import add_markov_columns
-from pj25_funds.report import save_ticker_artifacts
-from pj25_funds.settings import AppSettings, load_settings
+from old.scripts.pj25_funds.backtest import run_open_close_backtest
+from old.scripts.pj25_funds.data import load_futures_quotes
+from old.scripts.pj25_funds.markov import add_markov_columns
+from old.scripts.pj25_funds.report import save_ticker_artifacts
+from old.scripts.pj25_funds.settings import AppSettings, load_settings
 
 
 def build_parser() -> argparse.ArgumentParser:

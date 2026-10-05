@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from pj25_funds.report import save_ticker_artifacts
+from old.scripts.pj25_funds.report import save_ticker_artifacts
 
 
 def sample_features() -> pd.DataFrame:

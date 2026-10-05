@@ -10,7 +10,7 @@ import unittest
 
 import pandas as pd
 
-from pj25_funds.markov import add_markov_columns, build_transition_matrix
+from old.scripts.pj25_funds.markov import add_markov_columns, build_transition_matrix
 
 
 def sample_quotes() -> pd.DataFrame:

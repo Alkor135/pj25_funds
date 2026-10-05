@@ -13,7 +13,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.run_markov_backtest import run_database
+from old.scripts.run_markov_backtest import run_database
 
 
 def create_cli_futures_db(directory: Path) -> Path:

@@ -10,7 +10,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from pj25_funds.settings import load_settings
+from old.scripts.pj25_funds.settings import load_settings
 
 
 class SettingsTest(unittest.TestCase):

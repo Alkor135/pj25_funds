@@ -13,7 +13,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from pj25_funds.data import load_futures_quotes
+from old.scripts.pj25_funds.data import load_futures_quotes
 
 
 def create_futures_db(directory: Path) -> Path:
